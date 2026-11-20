@@ -1,40 +1,28 @@
-# GLPI Ticket Generator – Async Python Script
+# GLPI Ticket Generator
 
-Ce projet est un script Python asynchrone permettant de générer automatiquement un grand volume de tickets dans GLPI via son API REST. Il a été conçu pour des **tests de charge**, des **scénarios de simulation réaliste**, ou pour **alimenter des dashboards analytiques** (ex. : Power BI).
+Asynchronous Python script that generates large volumes of realistic tickets in [GLPI](https://glpi-project.org/) through its REST API. Built for load testing, populating test environments and feeding analytics dashboards (Power BI).
 
-## Fonctionnalités
+## Features
 
-- Création de tickets incidents ou demandes aléatoires.
-- Attribution automatique à des utilisateurs prédéfinis.
-- Choix aléatoire des entités et des catégories.
-- Gestion des statuts (Nouveau, Clos) avec calcul dynamique des dates.
-- Support de l’API REST de GLPI avec App-Token, User-Token, et Session-Token.
-- Fonctionnement asynchrone et optimisé avec `aiohttp`, `asyncio` et `tqdm`.
+- Random incidents and service requests, assigned to predefined users
+- Random entities and ITIL categories
+- Realistic lifecycle: *New* and *Closed* statuses with computed dates
+- Full GLPI REST authentication flow (App-Token, User-Token, Session-Token)
+- High throughput with `asyncio` + `aiohttp`, bounded concurrency and a `tqdm` progress bar
 
-## Prérequis
+## Requirements
 
 - Python 3.8+
-- Une instance GLPI accessible via HTTP/HTTPS
-- API REST activée et configurée sur GLPI
-- Un App Token et un User Token valides
-
-### Dépendances Python
+- A GLPI instance with the REST API enabled
+- A valid App token and User token
 
 ```bash
 pip install aiohttp tqdm
 ```
 
-## Utilisation
-
-```bash
-python3 script.py
-```
-
-> Le script génère par défaut 100 000 tickets en parallèle (modifiable via `total_tickets`).
-
 ## Configuration
 
-Les paramètres sont définis en haut du fichier `script.py` :
+Settings live at the top of `script.py`:
 
 ```python
 glpi_url = "http://127.0.0.1/glpi/apirest.php"
@@ -44,14 +32,15 @@ total_tickets = 100000
 concurrent_requests = 100
 ```
 
-Les utilisateurs, entités, et catégories peuvent être personnalisés dans les dictionnaires suivants :
+Users, entities and categories are defined in `users_ids`, `entity_ids`, `categories_demande` and `categories_incident`.
 
-- `users_ids`
-- `categories_demande`
-- `categories_incident`
-- `entity_ids`
+## Usage
 
-## Exemple de ticket généré
+```bash
+python3 script.py
+```
+
+## Example generated ticket
 
 ```json
 {
@@ -66,22 +55,12 @@ Les utilisateurs, entités, et catégories peuvent être personnalisés dans les
 }
 ```
 
-## Résultats attendus
+## Use cases
 
-- Génération rapide de plusieurs milliers de tickets.
-- Aucune surcharge du serveur grâce à la gestion des connexions concurrentes.
-- Données réalistes exploitables dans Power BI ou autres outils d’analyse.
+- Load testing a GLPI instance
+- Seeding test and demo environments
+- Producing realistic data for ITSM dashboards (resolution time, categories, volumes)
 
-## Cas d’usage
+## License
 
-- Tests de charge sur GLPI
-- Simulations de tickets pour environnement de test
-- Alimentation de dashboards statistiques (temps de traitement, catégories, etc.)
-
-## Licence
-
-Ce projet est distribué sous licence MIT. Utilisation libre à des fins de test ou développement.
-
----
-
-Développé dans un cadre de projet ITSM autour de GLPI.
+MIT
